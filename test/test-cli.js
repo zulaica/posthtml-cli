@@ -1,5 +1,5 @@
-import path from 'path';
-import fs from 'fs';
+import path from 'node:path';
+import fs from 'node:fs';
 import test from 'ava';
 import execa from 'execa';
 import pathExists from 'path-exists';
@@ -21,7 +21,7 @@ const read = file => new Promise((resolve, reject) => {
 
 test('Check version', async t => {
   const {stdout} = await execa(cli, ['-v']);
-  const {version} = await readPkg(path.dirname(__dirname));
+  const {version} = await readPkg(path.dirname(__dirname));/* eslint-disable-line unicorn/prefer-module */
   t.is(stdout, version);
 });
 
@@ -101,7 +101,7 @@ test('Transform html with config in file and stdin options use', async t => {
     '--posthtml-bem.elemPrefix=--',
     '--posthtml-bem.modPrefix',
     '_',
-    '--posthtml-bem.modDlmtr'
+    '--posthtml-bem.modDlmtr',
   ]);
   t.true(await pathExists(filename));
   t.is((await read('test/expected/output-bem.html')), (await read(filename)));
@@ -117,7 +117,7 @@ test('Transform html with stdin options use', async t => {
     '-u',
     'posthtml-custom-elements',
     '--posthtml-custom-elements.defaultTag',
-    'span'
+    'span',
   ]);
   t.true(await pathExists(filename));
   t.is((await read('test/expected/output-custom-elements.html')), (await read(filename)));
@@ -139,7 +139,7 @@ test('Transform html with stdin options use two key', async t => {
     '-u',
     'posthtml-custom-elements',
     '--posthtml-custom-elements.defaultTag',
-    'span'
+    'span',
   ]);
   t.true(await pathExists(filename));
   t.is((await read('test/expected/output-bem.html')), (await read(filename)));
@@ -155,7 +155,7 @@ test('Transform html stdin options use with modules', async t => {
     '-u',
     'posthtml-css-modules',
     '--posthtml-css-modules',
-    'test/fixtures/css-modules.json'
+    'test/fixtures/css-modules.json',
   ]);
   t.true(await pathExists(filename));
   t.is((await read('test/expected/output-modules.html')), (await read(filename)));
@@ -167,12 +167,12 @@ test('Transform html stdin options', async t => {
   t.plan(2);
   await execa(cli, [
     '-c',
-    'test/fixtures/by-config/options/.config'
+    'test/fixtures/by-config/options/.config',
   ]);
   t.true(await pathExists(outputPath));
   t.is(
     (await read(outputPath)),
-    (await read('test/fixtures/by-config/options/input.html'))
+    (await read('test/fixtures/by-config/options/input.html')),
   );
 });
 
@@ -182,12 +182,12 @@ test('Transform html stdin options only config one-io', async t => {
   t.plan(2);
   await execa(cli, [
     '-c',
-    'test/fixtures/by-config/one-io/.config'
+    'test/fixtures/by-config/one-io/.config',
   ]);
   t.true(await pathExists(outputPath));
   t.is(
     (await read(outputPath)),
-    (await read('test/fixtures/by-config/one-io/input.html'))
+    (await read('test/fixtures/by-config/one-io/input.html')),
   );
 });
 
@@ -199,17 +199,17 @@ test('Transform html stdin options only config two-io to dir', async t => {
   t.plan(4);
   await execa(cli, [
     '-c',
-    'test/fixtures/by-config/two-io/.config'
+    'test/fixtures/by-config/two-io/.config',
   ]);
   t.true(await pathExists(outputPath1));
   t.true(await pathExists(outputPath2));
   t.is(
     (await read(outputPath1)),
-    (await read('test/fixtures/by-config/two-io/input-1.html'))
+    (await read('test/fixtures/by-config/two-io/input-1.html')),
   );
   t.is(
     (await read(outputPath2)),
-    (await read('test/fixtures/by-config/two-io/input-2.html'))
+    (await read('test/fixtures/by-config/two-io/input-2.html')),
   );
 });
 
@@ -219,12 +219,12 @@ test('Transform html stdin options only config one-io-by-pattern', async t => {
   t.plan(2);
   await execa(cli, [
     '-c',
-    'test/fixtures/by-config/one-io-by-pattern/.config'
+    'test/fixtures/by-config/one-io-by-pattern/.config',
   ]);
   t.true(await pathExists(outputPath));
   t.is(
     (await read(outputPath)),
-    (await read('test/fixtures/by-config/one-io-by-pattern/input-1.html'))
+    (await read('test/fixtures/by-config/one-io-by-pattern/input-1.html')),
   );
 });
 
@@ -234,12 +234,12 @@ test('Transform html stdin options only config one-io anf plugins array', async 
   t.plan(2);
   await execa(cli, [
     '-c',
-    'test/fixtures/by-config/one-io-and-plugins-array/posthtml.config.js'
+    'test/fixtures/by-config/one-io-and-plugins-array/posthtml.config.js',
   ]);
   t.true(await pathExists(outputPath));
   t.is(
     (await read(outputPath)),
-    (await read('test/fixtures/by-config/one-io-and-plugins-array/input.html'))
+    (await read('test/fixtures/by-config/one-io-and-plugins-array/input.html')),
   );
 });
 
@@ -251,16 +251,16 @@ test('Output with keeping the folder structure with allInOutput option', async t
     'test/fixtures/input-nesting/**/*.html',
     '-o',
     outputPath,
-    '-a'
+    '-a',
   ]);
   t.true(await pathExists(outputPath));
   t.is(
     (await read('test/fixtures/input-nesting/input-nesting.html')),
-    (await read(`${outputPath}/test/fixtures/input-nesting/input-nesting.html`))
+    (await read(`${outputPath}/test/fixtures/input-nesting/input-nesting.html`)),
   );
   t.is(
     (await read('test/fixtures/input-nesting/input-nesting-child/input-nesting.html')),
-    (await read(`${outputPath}/test/fixtures/input-nesting/input-nesting-child/input-nesting.html`))
+    (await read(`${outputPath}/test/fixtures/input-nesting/input-nesting-child/input-nesting.html`)),
   );
 });
 
@@ -274,16 +274,16 @@ test('Specify the root of the output folder structure with root option', async t
     outputPath,
     '-a',
     '-r',
-    'test/fixtures/input-nesting'
+    'test/fixtures/input-nesting',
   ]);
   t.true(await pathExists(outputPath));
   t.is(
     (await read('test/fixtures/input-nesting/input-nesting.html')),
-    (await read(`${outputPath}/input-nesting.html`))
+    (await read(`${outputPath}/input-nesting.html`)),
   );
   t.is(
     (await read('test/fixtures/input-nesting/input-nesting-child/input-nesting.html')),
-    (await read(`${outputPath}/input-nesting-child/input-nesting.html`))
+    (await read(`${outputPath}/input-nesting-child/input-nesting.html`)),
   );
 });
 
@@ -298,12 +298,12 @@ test('Ignoring files by pattern', async t => {
     outputPath,
     '-a',
     '-r',
-    'test/fixtures/input-ignoring'
+    'test/fixtures/input-ignoring',
   ]);
   t.true(await pathExists(outputPath));
   t.is(
     (await read('test/fixtures/input-ignoring/input.html')),
-    (await read(`${outputPath}/input.html`))
+    (await read(`${outputPath}/input.html`)),
   );
   t.false(await pathExists('test/expected/input-ignoring/ignoring-input-child'));
 });
@@ -322,15 +322,15 @@ test('Skip parsing file', async t => {
     '-s',
     'input-skip.html',
     '-u',
-    'posthtml-custom-elements'
+    'posthtml-custom-elements',
   ]);
   t.true(await pathExists(outputPath));
   t.is(
     (await read('test/fixtures/input-skip/input.html')),
-    (await read(`${outputPath}/input.html`))
+    (await read(`${outputPath}/input.html`)),
   );
   t.is(
     (await read('test/fixtures/input-skip/input-skip.html')),
-    (await read(`${outputPath}/input-skip.html`))
+    (await read(`${outputPath}/input-skip.html`)),
   );
 });

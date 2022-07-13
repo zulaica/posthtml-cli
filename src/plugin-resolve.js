@@ -1,13 +1,13 @@
-import path from 'path';
+import path from 'node:path';
 
-const pluginExist = (pluginPath) => {
+const pluginExist = pluginPath => {
   try {
-    require(pluginPath);
+    require(pluginPath);/* eslint-disable-line unicorn/prefer-module */
     return true;
   } catch {}
 
   return false;
-}
+};
 
 export default (pluginName, root = './') => {
   if (pluginExist(pluginName)) {
@@ -20,4 +20,4 @@ export default (pluginName, root = './') => {
   }
 
   return pluginName;
-}
+};

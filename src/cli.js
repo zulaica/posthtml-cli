@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-import path from 'path';
-import fs from 'fs';
+import path from 'node:path';
+import fs from 'node:fs';
 import fg from 'fast-glob';
 import meow from 'meow';
 import makeDir from 'make-dir';
@@ -11,7 +11,7 @@ import outResolve from './out-resolve';
 import cfgResolve from './cfg-resolve';
 import pluginResolve from './plugin-resolve';
 
-const package_ = require('../package.json');
+const package_ = require('../package.json');/* eslint-disable-line unicorn/prefer-module */
 updateNotifier({pkg: package_}).notify();
 
 const cli = meow(`
@@ -39,24 +39,24 @@ const cli = meow(`
   flags: {
     config: {
       type: 'string',
-      alias: 'c'
+      alias: 'c',
     },
     version: {
       type: 'boolean',
-      alias: 'v'
+      alias: 'v',
     },
     help: {
       type: 'boolean',
-      alias: 'h'
+      alias: 'h',
     },
     output: {
       type: 'string',
-      alias: 'o'
+      alias: 'o',
     },
     use: {
       type: 'string',
       alias: 'u',
-      isMultiple: true
+      isMultiple: true,
     },
     // https://github.com/sindresorhus/meow/issues/158
     // options: {
@@ -66,19 +66,19 @@ const cli = meow(`
     root: {
       type: 'string',
       alias: 'r',
-      default: './'
+      default: './',
     },
     allInOutput: {
       type: 'boolean',
       default: false,
-      alias: 'a'
+      alias: 'a',
     },
     skip: {
       type: 'string',
       alias: 's',
-      isMultiple: true
-    }
-  }
+      isMultiple: true,
+    },
+  },
 });
 
 const read = file => new Promise(resolve => {
@@ -94,7 +94,7 @@ const read = file => new Promise(resolve => {
 const interopRequire = object => object && object.__esModule ? object.default : object;
 
 const getPlugins = config => Object.keys(config.plugins || {})
-  .map(plugin => interopRequire(require(pluginResolve(plugin, config.root)))(config.plugins[plugin]));
+  .map(plugin => interopRequire(require(pluginResolve(plugin, config.root)))(config.plugins[plugin]));/* eslint-disable-line unicorn/prefer-module */
 
 const config = cfgResolve(cli);
 
@@ -105,11 +105,11 @@ const processing = async file => {
 
   makeDir(path.dirname(output))
     .then(read.bind(undefined, file))
-    .then(html => Promise.resolve(posthtml(plugins).process(html, {
+    .then(html => posthtml(plugins).process(html, {
       ...config.options,
       skipParse,
-      from: file
-    })))
+      from: file,
+    }))
     .then(({html}) => {
       fs.writeFile(output, html, error => {
         if (error) {

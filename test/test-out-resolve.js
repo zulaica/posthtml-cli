@@ -1,4 +1,4 @@
-import path from 'path';
+import path from 'node:path';
 import test from 'ava';
 import isPromise from 'is-promise';
 import outResolve from '../lib/out-resolve';
@@ -28,7 +28,7 @@ test('input file and output folder should return tmp/file.ext', async t => {
 });
 
 test('input files and output folder should return tmp/test/*.ext', async t => {
-  t.is(await outResolve(path.normalize('tmp/test/*.ext'), undefined), path.normalize('tmp/test/*.ext'));
+  t.is(await outResolve(path.normalize('tmp/test/*.ext')), path.normalize('tmp/test/*.ext'));
 });
 
 test('input files and output file should return output.ext', async t => {

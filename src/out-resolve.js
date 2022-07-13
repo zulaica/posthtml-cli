@@ -1,8 +1,9 @@
-import path from 'path';
+import path from 'node:path';
 
 export default (input, {output, root, allInOutput} = {}) => new Promise(resolve => {
   if (output && path.extname(output)) {
-    return resolve(output);
+    resolve(output);
+    return;
   }
 
   if (output) {
@@ -12,8 +13,9 @@ export default (input, {output, root, allInOutput} = {}) => new Promise(resolve 
       inputPath = path.relative(root, input);
     }
 
-    return resolve(path.join(output, inputPath));
+    resolve(path.join(output, inputPath));
+    return;
   }
 
-  return resolve(input);
+  resolve(input);
 });

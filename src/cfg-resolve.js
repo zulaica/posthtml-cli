@@ -1,4 +1,4 @@
-import path from 'path';
+import path from 'node:path';
 import {cosmiconfigSync} from 'cosmiconfig';
 import toCamelCase from 'to-camel-case';
 import mergeOptions from 'merge-options';
@@ -14,7 +14,7 @@ export default ({input, flags = {}}) => {
     output,
     root = './',
     skip = [],
-    allInOutput = false
+    allInOutput = false,
   } = flags;
 
   if (config) {
@@ -25,9 +25,9 @@ export default ({input, flags = {}}) => {
     const configPluginOptions = config?.plugins ?? {};
 
     // Plugins defined via CLI options take precedence over the ones from config file.
-    use = [].concat(use).reduce((cfg, name) => {
-      let cliOptions = flags[toCamelCase(name)];
-      let configOptions = configPluginOptions[name];
+    use = [].concat(use).reduce((cfg, name) => {/* eslint-disable-line unicorn/prefer-array-flat, unicorn/prefer-spread, unicorn/no-array-reduce */
+      const cliOptions = flags[toCamelCase(name)];
+      const configOptions = configPluginOptions[name];
 
       // We merge this way because options can be both strings and objects.
       const merged = mergeOptions({[name]: configOptions}, {[name]: cliOptions || {}});
@@ -44,7 +44,7 @@ export default ({input, flags = {}}) => {
 
     // Add the remaining plugins if there is any.
     if (config && config.plugins) {
-      for (let name in configPluginOptions) {
+      for (const name in configPluginOptions) {
         if (configPluginOptions[name]) {
           use.plugins[name] = configPluginOptions[name];
         }
@@ -70,11 +70,11 @@ export default ({input, flags = {}}) => {
   }
 
   if (config?.skip) {
-    skip = skip.concat(config.skip);
+    skip = skip.concat(config.skip);/* eslint-disable-line unicorn/prefer-spread */
   }
 
-  input = []
-    .concat(input && input.length > 0 ? input : config?.input)
+  input = []/* eslint-disable-line unicorn/prefer-array-flat */
+    .concat(input && input.length > 0 ? input : config?.input)/* eslint-disable-line unicorn/prefer-spread */
     .filter(Boolean)
     .map(file => {
       const ignoreFile = file.startsWith('!');
@@ -105,6 +105,6 @@ export default ({input, flags = {}}) => {
     options,
     root,
     allInOutput,
-    skip
+    skip,
   }, use ?? {});
 };
