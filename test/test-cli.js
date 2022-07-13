@@ -4,7 +4,6 @@ import test from 'ava';
 import execa from 'execa';
 import pathExists from 'path-exists';
 import readPkg from 'read-pkg';
-// import copy from 'cpy';
 import tempfile from 'tempfile';
 import rimraf from 'rimraf';
 
