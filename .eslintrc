@@ -1,15 +1,21 @@
 {
+    "env": {
+        "es6": true
+    },
+    "parserOptions": {
+        "ecmaVersion": 6
+    },
     "parser": "@babel/eslint-parser",
     "plugins": [
-        "html",
         "ava",
-        "unicorn",
-        "babel",
-        "markdown"
+        "@babel",
+        "html",
+        "markdown",
+        "unicorn"
     ],
     "extends": [
-        "plugin:unicorn/recommended",
         "plugin:ava/recommended",
+        "plugin:unicorn/recommended",
         "xo",
         "xo-space"
     ],
